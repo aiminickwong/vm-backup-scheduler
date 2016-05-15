@@ -45,7 +45,10 @@ cp dist/service/engine-vm-backup.service %{buildroot}/usr/lib/systemd/system
 cp dist/dbscripts/createdb.sql %{buildroot}/usr/share/engine-vm-backup/
 cp dist/config/engine-vm-backup.properties %{buildroot}/etc/engine-vm-backup/
 touch %{buildroot}/etc/engine-vm-backup/mgmt-users.properties
+touch %{buildroot}/etc/engine-vm-backup/mgmt-groups.properties
 touch %{buildroot}/etc/engine-vm-backup/application-users.properties
+touch %{buildroot}/etc/engine-vm-backup/application-roles.properties
+
 
 %clean
 rm -rf %{buildroot}
