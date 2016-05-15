@@ -62,21 +62,19 @@ setup() {
     chkconfig --add engine-vm-backup
     chkconfig engine-vm-backup on
     echo "stopping engine"
-    /etc/init.d/ovirt-engine stop
-    echo "stopping dwh&reports"
-    /etc/init.d/ovirt-engine-reportsd stop
-    /etc/init.d/ovirt-engine-dwhd stop
+    systemctl stop ovirt-engine.service
+    echo "stopping dwh"
+    systemctl stop ovirt-engine-dwhd.service
     echo "restarting postgresql"
-    /etc/init.d/postgresql restart
+    systemctl restart postgresql.service
     echo "starting engine"
-    /etc/init.d/ovirt-engine start
-    echo "starting dwh&reports"
-    /etc/init.d/ovirt-engine-reportsd start
-    /etc/init.d/ovirt-engine-dwhd start
+    systemctl start ovirt-engine.service
+    echo "starting dwh"
+    systemctl start ovirt-engine-dwhd.service
     echo "Restarting httpd"
-    /etc/init.d/httpd restart
+    systemctl restart httpd.service
     echo "Staring engine-vm-backup service..."
-    /etc/rc.d/init.d/engine-vm-backup start
+    systemctl start engine-vm-backup.service
     echo "Setup proccess completed."
 }
 

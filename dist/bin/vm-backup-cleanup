@@ -1,4 +1,4 @@
-/etc/rc.d/init.d/engine-vm-backup stop
+systemctl stop engine-vm-backup.service
 
 echo "Dropping database..."
 sudo -su postgres dropdb ovirtbackup
