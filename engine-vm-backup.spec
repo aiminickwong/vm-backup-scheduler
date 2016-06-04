@@ -29,6 +29,7 @@ mvn clean package war:war
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/ovirt-engine/ui-plugins/
+mkdir -p %{buildroot}/usr/share/ovirt-engine/setup/plugins/ovirt-engine-setup/vm-backup-scheduler-plugin/
 mkdir -p %{buildroot}/usr/share/engine-vm-backup/deployments
 mkdir -p %{buildroot}/etc/httpd/conf.d/
 mkdir -p %{buildroot}/etc/engine-vm-backup/
@@ -36,6 +37,7 @@ mkdir -p %{buildroot}/usr/sbin/
 mkdir -p %{buildroot}/usr/lib/systemd/system
 mkdir -p %{buildroot}/var/log/engine-vm-backup/
 cp -r dist/UIPlugin/* %{buildroot}/usr/share/ovirt-engine/ui-plugins/
+cp -r dist/otopi/* %{buildroot}/usr/share/ovirt-engine/setup/plugins/ovirt-engine-setup/vm-backup-scheduler-plugin/
 cp dist/config/z-vm-backup-scheduler-proxy.conf %{buildroot}/etc/httpd/conf.d/
 cp dist/config/engine-vm-backup.xml %{buildroot}/etc/engine-vm-backup/
 cp target/vmBackupScheduler.war %{buildroot}/usr/share/engine-vm-backup/deployments/
@@ -65,6 +67,7 @@ ln -s /usr/share/patternfly1/resources/ /usr/share/ovirt-engine/ui-plugins/vbspl
 %attr(0755,root,root) /usr/sbin/vm-backup-cleanup
 %attr(0644,root,root) /usr/lib/systemd/system/engine-vm-backup.service
 /usr/share/ovirt-engine/ui-plugins/
+/usr/share/ovirt-engine/setup/plugins/ovirt-engine-setup/vm-backup-scheduler-plugin/
 /usr/share/engine-vm-backup/
 /etc/engine-vm-backup/
 /var/log/engine-vm-backup/
