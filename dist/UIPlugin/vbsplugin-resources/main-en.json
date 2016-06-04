@@ -1,0 +1,30 @@
+{
+  "table":{
+       "title": "List of all the Enabled Backup Plan:"
+  },
+  "thead": {
+    "vm": "VM",
+    "type": "Type",
+    "schedule": "Schedule",
+    "time": "Time",
+    "restriction": "Restriction",
+    "limit": "Limit of the Restriction"
+  },
+  "tbody": {
+    "incremental": "Incremental (Snapshots)",
+    "full": "Full (Export)",
+    "everyday": "Everyday",
+    "number": "Number of backups to keep",
+    "old": "Delete backups older than (days)",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "weeklynoday": "Weekly (no day specified)",
+    "every":"Every"
+  }
+}
+

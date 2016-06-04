@@ -6,14 +6,21 @@
 <script type='text/javascript'>
     var api = parent.pluginApi('VBSPlugin');
     var cfg = api.configObject();
+    var language = top.location.href.split("=")[1].split("#")[0];
 
     api.register({
         UiInit: function() {
+          if(language == 'zh_CN'){
             api.addSubTab('VirtualMachine', '虚拟机备份', 'vm-backup-vm-tab',
                 'plugin/VBSPlugin/vmTabResult.html');
             api.addMainTab('虚拟机备份', 'vm-backup-main-tab',
                 'plugin/VBSPlugin/mainTabResult.html');
-
+          }else{
+            api.addSubTab('VirtualMachine', 'vm backup', 'vm-backup-vm-tab',
+                'plugin/VBSPlugin/vmTabResult.html');
+            api.addMainTab('vm backup', 'vm-backup-main-tab',
+                'plugin/VBSPlugin/mainTabResult.html');
+          }
         },
         VirtualMachineSelectionChange: function() {
             if (arguments.length != 1) {
@@ -33,3 +40,4 @@
 </script>
 </body>
 </html>
+

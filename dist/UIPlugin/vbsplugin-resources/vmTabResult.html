@@ -8,8 +8,9 @@
 
 <body onload="initData(0)">
 
-  <script src="js/jquery-1.11.1.min.js" language="javascript"></script>
+  <script src="js/jquery-1.11.1.min.js" language="javascript" charset="utf-8"></script>
   <script src="patternfly/components/bootstrap-select/bootstrap-select.min.js"></script>
+  <script src="js/jquery.localize.min.js" type="text/javascript" charset="utf-8"></script>
   <script>
     // Initialize Boostrap-select
     $('.selectpicker').selectpicker();
@@ -17,44 +18,44 @@
 
   <!-- Selection -->
   <div class="row">
-    <div class="col-xs-1">
+    <div class="col-xs-1" data-localize="type.title">
       备份策略
     </div>
     <div class="col-xs-11">
       <select id="backupMethod" class="selectpicker">
-        <option value="0">增量备份（快照）</option>
-        <option value="1">完全备份（导出）</option>
+        <option value="0" data-localize="type.incremental">增量备份（快照）</option>
+        <option value="1" data-localize="type.full">完全备份（导出）</option>
       </select>
 
-       &nbsp; &nbsp;<input id="enabled" type="checkbox"/>启用
+       &nbsp; &nbsp;<input id="enabled" type="checkbox"/><b1 data-localize="backup.enable">启用</b1>
     </div>
   </div>
 
   <!-- Scheduling -->
   <div class="row row-highlight">
-    <div class="col-xs-1">
+    <div class="col-xs-1" data-localize="schedule.title">
       时间计划
     </div>
     <div class="col-xs-11">
       <div>
         <div>
-          备份周期：
+          <b1 data-localize="schedule.intervals">备份周期：</b1>
           <select id="cycle" class="selectpicker">
-            <option value="week">每周</option>
-            <option value="day">每天</option>
+            <option value="week" data-localize="schedule.weekly">每周</option>
+            <option value="day" data-localize="schedule.daily">每天</option>
           </select>
-          &nbsp; &nbsp;时间：
-          <input id="hour" type="text" value="" name="hour">时 &nbsp;
-          <input id="minute" type="text" value="" name="minute">分
+          &nbsp; &nbsp;<b1 data-localize="schedule.time">时间：</b1>
+          <input id="hour" type="text" value="" name="hour"><b1 data-localize="schedule.h">时 </b1> &nbsp;
+          <input id="minute" type="text" value="" name="minute"><b1 data-localize="schedule.m">分 </b1>
         </div>
         <div id="weekdays_div">
-          <label class="checkbox-inline"><input type="checkbox" id="monday" class="checkbox">星期一</input></label>
-          <label class="checkbox-inline"><input type="checkbox" id="tuesday" class="checkbox">星期二</input></label>
-          <label class="checkbox-inline"><input type="checkbox" id="wensday" class="checkbox">星期三</input></label>
-          <label class="checkbox-inline"><input type="checkbox" id="thusday" class="checkbox">星期四</input></label>
-          <label class="checkbox-inline"><input type="checkbox" id="friday" class="checkbox">星期五</input></label>
-          <label class="checkbox-inline"><input type="checkbox" id="sartuday" class="checkbox">星期六</input></label>
-          <label class="checkbox-inline"><input type="checkbox" id="sunday" class="checkbox">星期日</input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="monday" class="checkbox" ><b1 data-localize="schedule.monday">星期一</b1></input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="tuesday" class="checkbox" ><b1 data-localize="schedule.tuesday">星期二</b1></input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="wensday" class="checkbox" ><b1 data-localize="schedule.wednesday">星期三</b1></input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="thusday" class="checkbox" ><b1 data-localize="schedule.thursday">星期四</b1></input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="friday" class="checkbox" ><b1 data-localize="schedule.friday">星期五</b1></input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="sartuday" class="checkbox" ><b1 data-localize="schedule.saturday">星期六</b1></input></label>
+          <label class="checkbox-inline"><input type="checkbox" id="sunday" class="checkbox" ><b1 data-localize="schedule.sunday">星期日</b1></input></label>
         </div>
       </div>
     </div>
@@ -62,25 +63,24 @@
 
     <!-- Limits -->
     <div class="row">
-      <div class="col-xs-1">
+      <div class="col-xs-1" data-localize="limits.title">
         备份限制
       </div>
       <div class="col-xs-11">
         <div>
-          <label class="radio-inline"><input type="radio" value="0" name="keepPolicy" class="checkbox">保留备份数：</input></label>
-          <label class="text-inline"><input type="text" id="keepnumnum" class="checkbox"></input></label>&nbsp; &nbsp; &nbsp;
-          <label class="radio-inline"><input type="radio" value="1" name="keepPolicy" class="checkbox">保留备份天数：</input></label>
-          <label class="text-inline"><input type="text" id="keepdaynum" class="checkbox"></input></label>
+          <label class="radio-inline"><input type="radio" value="0" name="keepPolicy" class="checkbox"><b1 data-localize="limits.number">保留备份数：</b1></input></label>
+          <label class="text-inline"  style="height:25px;" ><input type="text" id="keepnumnum" class="checkbox" ></input></label>&nbsp; &nbsp; &nbsp;
+          <label class="radio-inline"><input type="radio" value="1" name="keepPolicy" class="checkbox"><b1 data-localize="limits.time" >保留备份天数：</b1></input></label>
+          <label class="text-inline" style="height:25px;"><input type="text" id="keepdaynum" class="checkbox" ></input></label>
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-xs-11 col-xs-offset-1">
-        <button type="button" class="btn btn-primary" onclick="save()">保存更改</button>
+        <button type="button" class="btn btn-primary" onclick="save()" data-localize="btn.save">保存更改</button>
       </div>
     </div>
-
       <script>
         function save() {
           var data = {};
@@ -149,6 +149,7 @@
           }
         }
 
+
         function initData(backupMethod) {
           $.ajax({
             type: "GET",
@@ -185,9 +186,12 @@
               }
             }
           });
-        }
-      </script>
-    </div>
 
-</body>
+      var  str =top.window.location.href.split("=")[1].split("#")[0];
+        if(str == "en_US"){
+          $("[data-localize]").localize("vm", { language: "en" })
+        }
+}
+      </script>
 </html>
+
