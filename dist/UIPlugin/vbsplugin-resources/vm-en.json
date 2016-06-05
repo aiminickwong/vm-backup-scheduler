@@ -1,0 +1,36 @@
+{
+  "backup":{
+       "title": "Backup",
+       "enable": "Enable"
+  },
+  "type": {
+    "title": "Type",
+    "incremental": "Incremental (Snapshots)",
+    "full": "Full (Export)"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "intervals": "Intervals:",
+    "weekly": "Weekly",
+    "daily": "Daily",
+    "time": "Time:",
+    "h": "h",
+    "m": "m",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "limits": {
+    "title": "Restriction",
+    "number": "Number of backups to keep:",
+    "time": "Delete backups older than (days):"
+  },
+  "btn": {
+    "save": "Save Changes"
+  }
+}
+

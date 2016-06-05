@@ -7,9 +7,10 @@
 
 <body onload="initData(0, 10)">
 
-  <script src="js/jquery-1.11.1.min.js" language="javascript"></script>
+  <script src="js/jquery-1.11.1.min.js" language="javascript" charset="utf-8"></script>
+  <script src="js/jquery.localize.min.js" type="text/javascript" charset="utf-8"></script>
 
-  <h3>已启用的虚拟机备份策略：</h3>
+  <h3 data-localize="table.title">已启用的虚拟机备份策略：</h3>
   <table class="table table-striped table-bordered table-hover">
     <thead id="tableHead"></thead>
     <tbody id="tableBody"></tbody>
@@ -45,11 +46,12 @@
         xmlhttp.setRequestHeader("Content-type", "application/json");
         xmlhttp.setRequestHeader("Prefer", "persistent-auth");
         xmlhttp.send(data);
+
     }
 
     function headerLine() {
         return toLine(
-            ["虚拟机名称", "备份策略", "备份周期", "备份时间", "备份限制", "备份限制数"], true);
+            ["<b1 data-localize='thead.vm'>虚拟机名称</b1>", "<b1 data-localize='thead.type'>备份策略</b1>", "<b1 data-localize='thead.schedule'>备份周期</b1>", "<b1 data-localize='thead.time'>备份时间</b1>", "<b1 data-localize='thead.restriction'>备份限制</b1>", "<b1 data-localize='thead.limit'>备份限制数</b1>"], true);
     }
 
     function toLine(arr, is_header) {
@@ -74,21 +76,25 @@
                     }
                     document.getElementById('tableBody').innerHTML += toLine(
                         [data1.name,
-                        element.backupMethod==0 ? "增量备份（快照）" : "完全备份（导出）",
-                        weekDaysEmpty ? "每天" : (getWeekDays(element.weekDays)),
+                        element.backupMethod==0 ? "<b1 data-localize='tbody.incremental'>增量备份（快照）</b1>" : "<b1 data-localize='tbody.full'>完全备份（导出）</b1>",
+                        weekDaysEmpty ? "<b1 data-localize='tbody.everyday'>每天</b1>" : (getWeekDays(element.weekDays)),
                         element.timeOfDay,
-                        element.autoDeleteReservePolicy==0 ? "按备份数量" : "按备份时间（天）",
+                        element.autoDeleteReservePolicy==0 ? "<b1 data-localize='tbody.number'>按备份数量</b1>" : "<b1 data-localize='tbody.old'>按备份时间（天）</b1>",
                         element.autoDeleteReserveAmount],
                         false);
                 }
                 addTableData(index+1, data);
             }, "GET");
         }
+        var str =top.window.location.href.split("=")[1].split("#")[0];
+        if(str == "en_US"){
+          $("[data-localize]").localize("main", { language: "en" })
+        }
     }
 
     function getWeekDays(weekDays) {
         var value = "";
-        var weekString = ["日","一","二","三","四","五","六"];
+        var weekString = ["<b1 data-localize='tbody.sunday'>日</b1>","<b1 data-localize='tbody.monday'>一</b1>","<b1 data-localize='tbody.tuesday'>二</b1>","<b1 data-localize='tbody.wednesday'>三</b1>","<b1 data-localize='tbody.thursday'>四</b1>","<b1 data-localize='tbody.friday'>五</b1>","<b1 data-localize='tbody.saturday'>六</b1>"]
         for (var i=0; i<7; i++) {
             if (weekDays[i] == "1") {
                 value += weekString[i];
@@ -97,17 +103,20 @@
                 }
             }
         }
-        return value ? "每周" + value.substring(0, value.length-1) : "按周（未指定任何一天）";
+        return value ? "<b1 data-localize='tbody.every'>每周</b1>" + value.substring(0, value.length-1) : "<b1 data-localize='tbody.weeklynoday'>按周（未指定任何一天）</b1>";
     }
+
 
     function initData(begin, length) {
         getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length, function(data) {
             document.getElementById('tableHead').innerHTML = headerLine();
+
             document.getElementById('tableBody').innerHTML = "";
             addTableData(0, data);
         },
         "GET"
         );
+
     }
 
     function previousPage() {
@@ -127,3 +136,5 @@
   </script>
 </body>
 </html>
+
+
