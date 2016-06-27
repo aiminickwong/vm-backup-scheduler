@@ -167,12 +167,14 @@
                 if (data["weekDays"] != undefined) {
                   setWeekDays(data["weekDays"]);
                 }
-                $('input:radio[name=keepPolicy]').filter("[value=" + data["autoDeleteReservePolicy"] + "]").attr('checked', true);
+                $('input:radio[name=keepPolicy]').filter("[value=" + data["autoDeleteReservePolicy"] + "]").prop('checked', true);
                 var policyAmount = data["autoDeleteReserveAmount"];
                 if (data["autoDeleteReservePolicy"] == "1") {
                   $("#keepdaynum").val(policyAmount);
+                  $("#keepnumnum").val('');
                 } else {
                   $("#keepnumnum").val(policyAmount);
+                  $("#keepdaynum").val('');
                 }
               } catch (e) {
                 $("#enabled").prop("checked", false);
