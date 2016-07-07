@@ -83,6 +83,7 @@
     </div>
       <script>
         function save() {
+          var api = parent.pluginApi('VBSPlugin');
           var data = {};
           data["vmID"] = window.location.href.split("#")[1];
           data["enabled"] = $("#enabled").is(":checked") ? "true" : "false";
@@ -106,9 +107,37 @@
             headers: {"Content-Type":"application/json"},
             data: JSON.stringify(data),
             success: function(data) {
-              alert("saved.");
-            }
-          });
+              var language = top.location.href.split("=")[1].split("#")[0];
+              if(language == 'en_US'){
+              api.showDialog('save','save-save','plugin/VBSPlugin/saveUS.html','340px','300px',{
+                buttons: [
+                  {
+                     label: 'sure',
+                     onClick: function() {
+                     api.closeDialog('save-save');
+                     }
+                  } 
+                 ],
+               resizeEnabled: true,
+               closeIconVisible: false,
+               closeOnEscKey: false
+              });}else{
+             api.showDialog('保存','save-save','plugin/VBSPlugin/saveCN.html','340px','300px',{
+               buttons: [
+                 {
+                    label: '确定',
+                    onClick: function() {
+                    api.closeDialog('save-save');
+                    }
+                 }
+               ],
+            resizeEnabled: true,
+            closeIconVisible: false,
+            closeOnEscKey: false
+             });
+                }
+           }
+           });
         }
 
         function getWeekDays() {
