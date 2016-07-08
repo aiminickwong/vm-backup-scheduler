@@ -66,9 +66,10 @@
     }
 
     function addTableData(index, data) {
+        var getTimestamp=new Date().getTime();
         if (data.length > index) {
             element = data[index];
-            getServerJson("/ovirt-engine/api/vms/" + element.vmID, function(data1) {
+            getServerJson("/ovirt-engine/api/vms/" + element.vmID++"?timestamp="+getTimestamp, function(data1) {
                 if (data1 != null) {
                     weekDaysEmpty = true;
                     if (element.weekDays) {
