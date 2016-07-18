@@ -25,7 +25,7 @@
       <a href="#" id="pageInfo">1</a>
     </li>
     <li>
-      <a href="#" onclick="nextPage()">
+      <a href="#" onclick="nextPage()" id="hid">
         <span class="i fa fa-angle-right"></span>
       </a>
     </li>
@@ -110,6 +110,11 @@
 
     function initData(begin, length) {
         getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length, function(data) {
+            if(data.length == 0){
+              document.getElementById("hid").setAttribute("hidden","hidden");
+              document.getElementById('pageInfo').innerHTML=i;
+              return 0;
+            }
             document.getElementById('tableHead').innerHTML = headerLine();
 
             document.getElementById('tableBody').innerHTML = "";
@@ -121,6 +126,7 @@
     }
 
     function previousPage() {
+        document.getElementById("hid").removeAttribute("hidden");
         i = parseInt(document.getElementById('pageInfo').innerHTML);
         if (i == 1) {
             return;
