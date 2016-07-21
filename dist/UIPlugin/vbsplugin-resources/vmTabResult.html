@@ -147,7 +147,7 @@
           var span1 =document.getElementById("spanid1");
           span1.innerHTML="<font color='red'>格式要求：时:只可以时0-24，分:只可以时0-60的整数</font>";
           var span2 =document.getElementById("spanid2");
-          span2.innerHTML="<font color='red'>整数要求在1-360</font>";
+          span2.innerHTML="<font color='red'>整数要求在0-360</font>";
         }
         }
 
@@ -210,7 +210,7 @@
         function judge3(val_str){
           var reg_str = /^\d{1,3}$/;
           if(reg_str.test(val_str)){
-             if(val_str >= 1 && val_str <=360){
+             if(val_str >= 0 && val_str <=360){
                  return true;
              }
           }
@@ -238,10 +238,10 @@
                 var policyAmount = data["autoDeleteReserveAmount"];
                 if (data["autoDeleteReservePolicy"] == "1") {
                   $("#keepdaynum").val(policyAmount);
-                  $("#keepnumnum").val('');
+                  $("#keepnumnum").val(0);
                 } else {
                   $("#keepnumnum").val(policyAmount);
-                  $("#keepdaynum").val('');
+                  $("#keepdaynum").val(0);
                 }
               } catch (e) {
                 $("#enabled").prop("checked", false);
@@ -251,6 +251,7 @@
                 setWeekDays("0000000");
                 $('input:radio[name=keepPolicy]').filter("[value=0]").attr('checked', true);
                 $("#keepnumnum").val(0);
+                $("#keepdaynum").val(0);
                 $("#weekdays_div").css("display", "block");
               }
             }
