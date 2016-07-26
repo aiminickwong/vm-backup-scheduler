@@ -1,6 +1,6 @@
 [Unit]
 Description=engine-vm-backup
-After=postgresql.service
+After=ovirt-engine.service
 
 [Service]
 Type=simple
