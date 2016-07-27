@@ -43,6 +43,7 @@ public class Backend{
         timer.schedule(new ExecuteExport(api), 2000, interval);
         timer.schedule(new DeleteExport(api), 3000, interval);
         timer.schedule(new DeleteSnapshot(api), 4000, interval);
+        timer.schedule(new DeleteTempSnapshot(api), 5000, interval);
     }
 
     @PreDestroy
@@ -68,5 +69,4 @@ public class Backend{
             return getApi(interval + 10000);
         }
     }
-
 }
