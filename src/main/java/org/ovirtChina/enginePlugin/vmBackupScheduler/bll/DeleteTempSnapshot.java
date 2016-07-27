@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.ovirt.engine.sdk.Api;
-import org.ovirt.engine.sdk.decorators.VM;
 import org.ovirt.engine.sdk.exceptions.ServerException;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.Task;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.TaskStatus;
@@ -24,19 +23,12 @@ public class DeleteTempSnapshot extends TimerSDKTask {
         }
     }
 
-    private void findAndDelete() throws ClientProtocolException, ServerException, IOException {
+    private void findAndDelete() throws ClientProtocolException, ServerException, IOException, InterruptedException {
         Task task = DbFacade.getInstance()
                 .getTaskDAO().getOldestTaskTypeWithStatus(TaskType.DeleteTmpSnapshot, TaskStatus.FINISHED);
         if (task != null) {
-            VM vm =  api.getVMs().get(task.getVmID());
-            if (vm.getStatus().getState().equals("down")) {
-                try{
-                    vm.getSnapshots().getById(task.getBackupName()).delete();
-                } catch(ServerException e) {
-                    setTaskStatus(task, TaskStatus.DELETED);
-                }
-                setTaskStatus(task, TaskStatus.DELETED);
-            }
+            deleteSnapshot(task);
+            Thread.sleep(1000);
             findAndDelete();
         }
     }
