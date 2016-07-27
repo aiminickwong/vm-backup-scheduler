@@ -10,7 +10,6 @@ import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
 import org.ovirt.engine.sdk.Api;
-import org.ovirt.engine.sdk.decorators.StorageDomain;
 import org.ovirt.engine.sdk.decorators.VM;
 import org.ovirt.engine.sdk.decorators.VMDisk;
 import org.ovirt.engine.sdk.entities.Action;
@@ -78,8 +77,8 @@ public class ExecuteExport extends TimerSDKTask {
                         setTaskStatus(deleteTmpTask, TaskStatus.FAILED);
                         setTaskStatus(taskToExec, TaskStatus.FAILED);
                     }
-                    setTaskStatus(deleteTmpTask, TaskStatus.FINISHED);
                     vmCopy = cloneVmFromSnapshot(vmFrom, taskToExec);
+                    setTaskStatus(deleteTmpTask, TaskStatus.FINISHED);
                 }
 
                 taskToExec.setBackupName(vmCopy.getId());

@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.apache.http.client.ClientProtocolException;
 import org.ovirt.engine.sdk.Api;
-import org.ovirt.engine.sdk.decorators.Cluster;
 import org.ovirt.engine.sdk.decorators.DataCenter;
 import org.ovirt.engine.sdk.decorators.Event;
 import org.ovirt.engine.sdk.decorators.StorageDomain;
@@ -125,6 +124,36 @@ public abstract class TimerSDKTask extends TimerTask {
         long diff = milliseconds2 - milliseconds1;
         long seconds = diff / 1000;
         return (int) seconds;
+    }
+
+    protected void deleteSnapshot(Task task) throws ClientProtocolException, ServerException, IOException, InterruptedException {
+		VM vm = api.getVMs().get(task.getVmID());
+		String vm_status = vm.getStatus().getState();
+        if (vm_status.equals("down") || vm_status.equals("up")) {
+            String message = "delete CreateSnapshot backup for vm: " + vm.getName() + " has initiated.";
+            try{
+                vm.getSnapshots().getById(task.getBackupName()).delete();
+            } catch (ServerException e) {
+                if(e.getCode() == 409 && "Conflict".equals(e.getReason())) {
+                    log.debug("delaying deletion of snapshot: " + task.getBackupName() + " for vm: " + task.getVmID()
+                        + ", because vm is making snapshot tasks");
+                    return;
+                }else{
+                    deleteTaskRecord(EngineEventSeverity.normal, message, task);
+                }
+            }
+            deleteTaskRecord(EngineEventSeverity.normal, message, task);
+        } else {
+            log.debug("cancel deletion of snapshot: " + task.getBackupName() + " for vm: " + task.getVmID()
+                + ", because vm is not in 'down' or 'up' status.");
+        }
+    }
+
+    protected void deleteTaskRecord(EngineEventSeverity severity, String message, Task task)
+            throws ClientProtocolException, ServerException, IOException, InterruptedException {
+        log.info(message);
+        addEngineEvent(severity, message);
+        DbFacade.getInstance().getTaskDAO().delete(task.getVmID(), task.getBackupName());
     }
 
     protected abstract void peformAction() throws Exception;

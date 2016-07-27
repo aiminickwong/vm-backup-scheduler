@@ -10,7 +10,6 @@ import org.ovirt.engine.sdk.decorators.VM;
 import org.ovirt.engine.sdk.exceptions.ServerException;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.AutoDeleteReservePolicy;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.BackupMethod;
-import org.ovirtChina.enginePlugin.vmBackupScheduler.common.EngineEventSeverity;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.Task;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.VmPolicy;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.dao.DbFacade;
@@ -59,12 +58,6 @@ public abstract class DeleteOldBackupSDKTask extends TimerSDKTask {
                 }
             }
         }
-    }
-
-    protected void deleteTaskRecord(EngineEventSeverity severity, String message, Task task) throws ClientProtocolException, ServerException, IOException, InterruptedException {
-        log.info(message);
-        addEngineEvent(severity, message);
-        DbFacade.getInstance().getTaskDAO().delete(task.getVmID(), task.getBackupName());
     }
 
     protected abstract void deleteTask(Task task) throws ClientProtocolException, ServerException, IOException, InterruptedException;

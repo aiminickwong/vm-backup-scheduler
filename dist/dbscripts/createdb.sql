@@ -147,6 +147,7 @@ BEGIN
     SELECT create_time
     FROM tasks
     WHERE id = v_id
+    AND task_type = v_task_type
     ORDER BY create_time DESC
     LIMIT 1
   );
