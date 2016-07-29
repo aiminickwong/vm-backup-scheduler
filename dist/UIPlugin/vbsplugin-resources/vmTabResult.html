@@ -68,9 +68,9 @@
       </div>
       <div class="col-xs-11">
         <div>
-          <label class="radio-inline"><input type="radio" value="0" name="keepPolicy" class="checkbox"><b1 data-localize="limits.number">保留备份数：</b1></input></label>
+          <label class="radio-inline"><input type="radio" value="0" name="keepPolicy" class="checkbox" onclick="to_change()"><b1 data-localize="limits.number">保留备份数：</b1></input></label>
           <label class="text-inline"  style="height:25px;" ><input type="text" id="keepnumnum" class="checkbox" ></input></label>&nbsp; &nbsp; &nbsp;
-          <label class="radio-inline"><input type="radio" value="1" name="keepPolicy" class="checkbox"><b1 data-localize="limits.time" >保留备份天数：</b1></input></label>
+          <label class="radio-inline"><input type="radio" value="1" name="keepPolicy" class="checkbox" onclick="to_change()"><b1 data-localize="limits.time" >保留备份天数：</b1></input></label>
           <label class="text-inline" style="height:25px;"><input type="text" id="keepdaynum" class="checkbox" ></input></label>&nbsp&nbsp<span id="spanid2"></span>
         </div>
       </div>
@@ -82,6 +82,19 @@
       </div>
     </div>
       <script>
+       
+        function to_change()
+        {
+           document.getElementById("keepdaynum").setAttribute("readonly","readonly");
+           document.getElementById("keepnumnum").removeAttribute("readonly");
+        }
+        function to_change2()
+        {
+           document.getElementById("keepnumnum").setAttribute("readonly","readonly");
+           document.getElementById("keepdaynum").removeAttribute("readonly");
+        }
+
+
         function save() {
           var a =  $("#hour").val();
           var b =  $("#minute").val();
@@ -239,9 +252,11 @@
                 if (data["autoDeleteReservePolicy"] == "1") {
                   $("#keepdaynum").val(policyAmount);
                   $("#keepnumnum").val(0);
+                  document.getElementById("keepnumnum").setAttribute("readonly","readonly");
                 } else {
                   $("#keepnumnum").val(policyAmount);
                   $("#keepdaynum").val(0);
+                  document.getElementById("keepdaynum").setAttribute("readonly","readonly");
                 }
               } catch (e) {
                 $("#enabled").prop("checked", false);
@@ -252,6 +267,7 @@
                 $('input:radio[name=keepPolicy]').filter("[value=0]").attr('checked', true);
                 $("#keepnumnum").val(0);
                 $("#keepdaynum").val(0);
+                document.getElementById("keepdaynum").setAttribute("readonly","readonly");
                 $("#weekdays_div").css("display", "block");
               }
             }
