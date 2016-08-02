@@ -109,11 +109,29 @@
 
 
     function initData(begin, length) {
+        i = parseInt(document.getElementById('pageInfo').innerHTML);
+        if(i==1){
+        getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length, function(data) {
+            document.getElementById('tableHead').innerHTML = headerLine();
+
+            document.getElementById('tableBody').innerHTML = "";
+            addTableData(0, data);
+        },
+        "GET"
+        );
+        }else{
         getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length, function(data) {
             if(data.length == 0){
-              document.getElementById("hid").setAttribute("hidden","hidden");
-              document.getElementById('pageInfo').innerHTML=i;
-              return 0;
+              if(document.getElementById('pageInfo').innerHTML==2){
+                i = parseInt(document.getElementById('pageInfo').innerHTML);
+                document.getElementById('pageInfo').innerHTML = i - 1;
+                return 0;
+              }else{
+                document.getElementById("hid").setAttribute("hidden","hidden");
+                i = parseInt(document.getElementById('pageInfo').innerHTML);
+                document.getElementById('pageInfo').innerHTML = i - 1;
+                return 0;
+              }
             }
             document.getElementById('tableHead').innerHTML = headerLine();
 
@@ -123,6 +141,7 @@
         "GET"
         );
 
+        }
     }
 
     function previousPage() {
@@ -143,5 +162,4 @@
   </script>
 </body>
 </html>
-
 
