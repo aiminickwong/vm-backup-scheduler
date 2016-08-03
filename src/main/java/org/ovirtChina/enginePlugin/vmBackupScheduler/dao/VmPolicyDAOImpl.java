@@ -14,7 +14,14 @@ public class VmPolicyDAOImpl extends CrudDAO<VmPolicy>{
     public List<VmPolicy> getScheduleVms() {
         return DbFacade.getInstance().executeReadList("getScheduleVms", instance, null);
     }
-
+    public  List<VmPolicy> selectallid(){
+    	return DbFacade.getInstance().executeReadList("selectallid", instance, null);
+    }
+    public void deleteVmPolicy(UUID vmid){
+    	
+		DbFacade.getInstance().executeModification("deleteVmPolicy", createIdParametersMapper(vmid));
+    }
+    
     public VmPolicy get(UUID id, int backupMethod) {
         List<VmPolicy> result =
                 (List<VmPolicy>)DbFacade.getInstance().executeReadList(
