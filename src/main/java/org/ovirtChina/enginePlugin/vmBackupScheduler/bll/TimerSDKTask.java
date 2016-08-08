@@ -1,8 +1,10 @@
 package org.ovirtChina.enginePlugin.vmBackupScheduler.bll;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimerTask;
 import java.util.UUID;
 
@@ -12,11 +14,14 @@ import org.ovirt.engine.sdk.decorators.DataCenter;
 import org.ovirt.engine.sdk.decorators.Event;
 import org.ovirt.engine.sdk.decorators.StorageDomain;
 import org.ovirt.engine.sdk.decorators.VM;
+import org.ovirt.engine.sdk.decorators.VMs;
 import org.ovirt.engine.sdk.entities.Snapshot;
+
 import org.ovirt.engine.sdk.exceptions.ServerException;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.EngineEventSeverity;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.Task;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.common.TaskStatus;
+import org.ovirtChina.enginePlugin.vmBackupScheduler.common.VmPolicy;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.dao.DbFacade;
 import org.ovirtChina.enginePlugin.vmBackupScheduler.utils.ConfigProvider;
 import org.slf4j.Logger;
@@ -126,6 +131,28 @@ public abstract class TimerSDKTask extends TimerTask {
         return (int) seconds;
     }
 
+    protected void deletedb(){
+    	VMs vms = api.getVMs();
+    	List<VM> list1;
+		try {
+			list1 = vms.list();
+			List listvmid=new ArrayList(list1.size());
+	    	for(int i=0;i<list1.size();i++){
+	    		String str =list1.get(i).getId();
+	    		listvmid.add(i, list1.get(i).getId());
+	    	}
+	    	List<VmPolicy> list2 = DbFacade.getInstance().getVmPolicyDAO().selectallid();
+	    	list2.removeAll(listvmid);
+	    	for(int i=0;i<list2.size();i++){
+	    		DbFacade.getInstance().getVmPolicyDAO().deleteVmPolicy(list2.get(i).getVmID());
+	    	}
+		} catch (ServerException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
+    
     protected void deleteSnapshot(Task task) throws ClientProtocolException, ServerException, IOException, InterruptedException {
 		VM vm = api.getVMs().get(task.getVmID());
 		String vm_status = vm.getStatus().getState();

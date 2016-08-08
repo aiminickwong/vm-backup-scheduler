@@ -73,6 +73,7 @@ CREATE TYPE task AS (
   last_update timestamp with time zone
 );
 
+
 CREATE OR REPLACE FUNCTION getTaskById(v_id UUID) RETURNS SETOF task STABLE
   AS $procedure$
 BEGIN
@@ -242,6 +243,12 @@ BEGIN
 END; $procedure$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION selectallid() RETURNS VOID
+  AS $procedure$
+BEGIN
+  SELECT distinct v_id FROM vm_policies;
+END; $procedure$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION deleteVmPolicy(v_id UUID) RETURNS VOID
   AS $procedure$
