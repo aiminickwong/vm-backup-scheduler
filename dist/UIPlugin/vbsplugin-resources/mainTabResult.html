@@ -109,9 +109,10 @@
 
 
     function initData(begin, length) {
+        var getTimestamp=new Date().getTime();
         i = parseInt(document.getElementById('pageInfo').innerHTML);
         if(i==1){
-        getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length, function(data) {
+        getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length+"&timestamp="+getTimestamp, function(data) {
             document.getElementById('tableHead').innerHTML = headerLine();
 
             document.getElementById('tableBody').innerHTML = "";
@@ -120,7 +121,7 @@
         "GET"
         );
         }else{
-        getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length, function(data) {
+        getServerJson("/vmBackupScheduler/vmPolicies?page=" + begin + "-" + length+"&timestamp="+getTimestamp, function(data) {
             if(data.length == 0){
               if(document.getElementById('pageInfo').innerHTML==2){
                 i = parseInt(document.getElementById('pageInfo').innerHTML);
