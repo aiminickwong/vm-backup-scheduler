@@ -237,6 +237,10 @@
             type: "GET",
             url: "/vmBackupScheduler/vmPolicies/" + window.location.href.split("#")[1] + "?backupMethod=" + backupMethod,
             headers: {"Accept":"application/json"},
+            beforeSend :function(xmlHttp){
+            xmlHttp.setRequestHeader("If-Modified-Since","0");
+            xmlHttp.setRequestHeader("Cache-Control","no-cache");
+            },
             success: function(data) {
               try {
                 $("#enabled").prop("checked", data["enabled"])
