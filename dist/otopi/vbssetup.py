@@ -19,8 +19,14 @@ class Plugin(plugin.PluginBase):
         ),
     )
     def enable_vm_backup_scheduler_plugin(self):
-        os.system("sed -i '/Defaults    requiretty/c\#Defaults    requiretty' /etc/sudoers")
-        os.system("vm-backup-setup --password=%s"
-            % self.environment[oenginecons.ConfigEnv.ADMIN_PASSWORD])
-        os.system("sed -i '/#Defaults    requiretty/c\Defaults    requiretty' /etc/sudoers")
-        self.dialog.note(text="vm backup scheduler enabled.")
+        version = self.environment[
+                oenginecons.ConfigEnv.EAYUNOS_VERSION
+            ]
+        if version == 'BaseVersion':
+            os.system("yum remove -y engine-vm-backup")
+        else:
+            os.system("sed -i '/Defaults    requiretty/c\#Defaults    requiretty' /etc/sudoers")
+            os.system("vm-backup-setup --password=%s"
+                % self.environment[oenginecons.ConfigEnv.ADMIN_PASSWORD])
+            os.system("sed -i '/#Defaults    requiretty/c\Defaults    requiretty' /etc/sudoers")
+            self.dialog.note(text="vm backup scheduler enabled.")
