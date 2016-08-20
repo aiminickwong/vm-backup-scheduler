@@ -44,7 +44,7 @@ public class Backend{
         timer.schedule(new DeleteExport(api), 3000, interval);
         timer.schedule(new DeleteSnapshot(api), 4000, interval);
         timer.schedule(new DeleteTempSnapshot(api), 5000, interval);
-        timer.schedule(new Deletedb(api), 6000, interval);
+        timer.schedule(new Deletedb(api), 6000, interval*10);
     }
 
     @PreDestroy

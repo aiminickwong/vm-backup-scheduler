@@ -243,12 +243,14 @@ BEGIN
 END; $procedure$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION selectallid() RETURNS VOID
+
+CREATE OR REPLACE FUNCTION selectallid() RETURNS SETOF vm_policy STABLE
   AS $procedure$
 BEGIN
-  SELECT distinct v_id FROM vm_policies;
+RETURN QUERY SELECT * FROM vm_policies;
 END; $procedure$
 LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION deleteVmPolicy(v_id UUID) RETURNS VOID
   AS $procedure$
