@@ -102,7 +102,7 @@ END; $procedure$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION getExecutingTaskForVm(v_id UUID)RETURNS SETOF task STABLE
+CREATE OR REPLACE FUNCTION getExecutingTasksForVm(v_id UUID)RETURNS SETOF task STABLE
   AS $procedure$
 BEGIN
 RETURN QUERY SELECT *
@@ -110,8 +110,7 @@ RETURN QUERY SELECT *
              WHERE task.id = v_id
              AND (task.task_status = 0
              OR task.task_status = 1
-             OR task.task_status = 5)
-             LIMIT 1;
+             OR task.task_status = 5);
 END; $procedure$
 LANGUAGE plpgsql;
 
