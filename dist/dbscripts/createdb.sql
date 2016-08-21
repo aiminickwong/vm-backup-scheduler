@@ -139,7 +139,6 @@ RETURNS VOID
 BEGIN
   UPDATE tasks
   SET task_status = v_task_status,
-      task_type = v_task_type,
       backup_name = v_backup_name,
       create_time = v_create_time,
       last_update = v_last_update
@@ -150,7 +149,7 @@ BEGIN
     AND task_type = v_task_type
     ORDER BY create_time DESC
     LIMIT 1
-  );
+  ) AND task_type = v_task_type;
 END; $procedure$
 LANGUAGE plpgsql;
 
