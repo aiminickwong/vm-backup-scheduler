@@ -149,7 +149,9 @@ BEGIN
     AND task_type = v_task_type
     ORDER BY create_time DESC
     LIMIT 1
-  ) AND task_type = v_task_type;
+  )
+  AND task_type = v_task_type
+  AND id = v_id;
 END; $procedure$
 LANGUAGE plpgsql;
 
