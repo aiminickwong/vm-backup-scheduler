@@ -35,16 +35,7 @@ public class Backend{
             log.error("Error locating datasource.");
         }
 
-        int interval = Integer.parseInt(ConfigProvider.getConfig().getProperty(ConfigProvider.QUERY_INTERVAL_M));
-        api = getApi(interval);
-        Timer timer = new Timer();
-        timer.schedule(new FindJobs(), 0, interval);
-        timer.schedule(new ExecuteSnapshot(api), 1000, interval);
-        timer.schedule(new ExecuteExport(api), 2000, interval);
-        timer.schedule(new DeleteExport(api), 3000, interval);
-        timer.schedule(new DeleteSnapshot(api), 4000, interval);
-        timer.schedule(new DeleteTempSnapshot(api), 5000, interval);
-        timer.schedule(new Deletedb(api), 6000, interval*10);
+        new Thread(new ApiFetcher()).start();
     }
 
     @PreDestroy
@@ -69,5 +60,28 @@ public class Backend{
             Thread.sleep(interval);
             return getApi(interval + 10000);
         }
+    }
+
+    private class ApiFetcher implements Runnable {
+
+        @Override
+        public void run() {
+            int interval = Integer.parseInt(ConfigProvider.getConfig().getProperty(ConfigProvider.QUERY_INTERVAL_M));
+            try {
+                api = getApi(interval);
+                log.info("Succesfully connected to api.");
+                Timer timer = new Timer();
+                timer.schedule(new FindJobs(), 0, interval);
+                timer.schedule(new ExecuteSnapshot(api), 1000, interval);
+                timer.schedule(new ExecuteExport(api), 2000, interval);
+                timer.schedule(new DeleteExport(api), 3000, interval);
+                timer.schedule(new DeleteSnapshot(api), 4000, interval);
+                timer.schedule(new DeleteTempSnapshot(api), 5000, interval);
+                timer.schedule(new Deletedb(api), 6000, interval*10);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
