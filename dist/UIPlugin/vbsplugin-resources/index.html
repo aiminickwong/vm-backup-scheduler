@@ -8,6 +8,23 @@
     var cfg = api.configObject();
     var language = top.location.href.split("=")[1].split("#")[0];
 
+    function getServerJson(url, cfunc, method, data) {
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                cfunc(JSON.parse(xmlhttp.responseText));
+            }
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 404) {
+                cfunc(null);
+            }
+        }
+        xmlhttp.open(method, url, true);
+        xmlhttp.setRequestHeader("Accept", "application/json");
+        xmlhttp.setRequestHeader("Content-type", "application/json");
+        xmlhttp.setRequestHeader("Prefer", "persistent-auth");
+        xmlhttp.send(data);
+    }
+
     api.register({
         UiInit: function() {
           if(language == 'zh_CN'){
@@ -23,13 +40,19 @@
           }
         },
         VirtualMachineSelectionChange: function() {
-            if (arguments.length != 1) {
-                api.setTabAccessible('vm-backup-vm-tab', false);
-            }
-            else {
-                api.setTabContentUrl('vm-backup-vm-tab',
-                        'plugin/VBSPlugin/vmTabResult.html#'+arguments[0].id);
-                api.setTabAccessible('vm-backup-vm-tab', true);
+            api.setTabAccessible('vm-backup-vm-tab', false);
+            if (arguments[0]) {
+                getServerJson(
+                    "/eayunos/api/vms/" + arguments[0].id,
+                    function (obj) {
+                        if (obj.name != "HostedEngine") {
+                            api.setTabContentUrl('vm-backup-vm-tab',
+                                    'plugin/VBSPlugin/vmTabResult.html#'+arguments[0].id);
+                            api.setTabAccessible('vm-backup-vm-tab', true);
+                        }
+                    },
+                    "GET"
+                );
             }
         },
         SystemTreeSelectionChange: function(selectedNode) {
