@@ -102,9 +102,17 @@ public class ExecuteExport extends TimerSDKTask {
                     return;
                 }
                 log.info("Start executing task Export for vm: " + vmCopy.getName());
-                api.getVMs().get(vmCopy.getName()).exportVm(action);
                 try{
+                    api.getVMs().get(vmCopy.getName()).exportVm(action);
                     queryVmForDown(vmCopy, "Exporting");
+                } catch (ServerException e) {
+                    if(e.getCode() == 409 && "Conflict".equals(e.getReason())) {
+                        String message = "The export domain in the data center of vm: " + vm.getName() + " is not up, aborting export backup.";
+                        log.error(message);
+                        addEngineEvent(EngineEventSeverity.error, message);
+                        setTaskStatus(taskToExec, TaskStatus.FAILED);
+                        return;
+                    }
                 } catch (Exception e) {
                     log.error("Error while exporting vm: " + vmCopy.getName(), e);
                     setTaskStatus(taskToExec, TaskStatus.FAILED);
