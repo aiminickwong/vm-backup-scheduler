@@ -69,7 +69,7 @@ ln -s /usr/share/patternfly1/resources/ /usr/share/ovirt-engine/ui-plugins/vbspl
 /usr/share/ovirt-engine/ui-plugins/
 /usr/share/ovirt-engine/setup/plugins/ovirt-engine-setup/vm-backup-scheduler-plugin/
 /usr/share/engine-vm-backup/
-/etc/engine-vm-backup/
+%config /etc/engine-vm-backup/*
 /var/log/engine-vm-backup/
 
 %postun
