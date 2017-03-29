@@ -43,12 +43,14 @@ public abstract class DeleteOldBackupSDKTask extends TimerSDKTask {
                                 log.debug("deleting vm " + vm.getName() + "'s old " + BackupMethod.forValue(taskType) + " backup " + finishedTasks.get(0).getBackupName());
                                 deleteTask(finishedTasks.get(0));
                             }
+                            break;
                         case Day:
                             if (finishedTasks.get(0).getCreateTime().getTime() + dayMillis * vmPolicy.getAutoDeleteReserveAmount()
                                     < System.currentTimeMillis()) {
                                 log.debug("deleting vm " + vm.getName() + "'s old " + BackupMethod.forValue(taskType) + " backup " + finishedTasks.get(0).getBackupName());
                                 deleteTask(finishedTasks.get(0));
                             }
+                            break;
                         default:
                             break;
                         }
