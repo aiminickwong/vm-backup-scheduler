@@ -17,6 +17,9 @@ class Plugin(plugin.PluginBase):
         after=(
             osetupcons.Stages.DIALOG_TITLES_E_SUMMARY,
         ),
+        condition=lambda self: (
+            self.environment[oenginecons.EngineDBEnv.NEW_DATABASE]
+        ),
     )
     def enable_vm_backup_scheduler_plugin(self):
         version = self.environment[
@@ -30,3 +33,15 @@ class Plugin(plugin.PluginBase):
                 % self.environment[oenginecons.ConfigEnv.ADMIN_PASSWORD])
             os.system("sed -i '/#Defaults    requiretty/c\Defaults    requiretty' /etc/sudoers")
             self.dialog.note(text="vm backup scheduler enabled.")
+
+    @plugin.event(
+        stage=plugin.Stages.STAGE_CLOSEUP,
+        after=(
+            osetupcons.Stages.DIALOG_TITLES_E_SUMMARY,
+        ),
+        condition=lambda self: (
+            not self.environment[oenginecons.EngineDBEnv.NEW_DATABASE]
+        ),
+    )
+    def restart_vm_backup_scheduler_plugin(self):
+        os.system("service engine-vm-backup restart")
